@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        textView = findViewById(R.id.textView);
+        textView = findViewById(R.id.textViewSensor);
 
         sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION);
@@ -43,22 +43,20 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         if (event.sensor.getType() == Sensor.TYPE_LINEAR_ACCELERATION) {
             // Subtracting the gravity vector from the raw accelerometer data to get linear acceleration
             linearAcceleration[0] = event.values[0];
-            linearAcceleration[1] = event.values[1];
-            linearAcceleration[2] = event.values[2];
 
             long currentTime = System.currentTimeMillis();
             if ((currentTime - lastUpdate) > 100) {
                 lastUpdate = currentTime;
 
                 // Computing the angle of the phone relative to a flat surface
-                float pitch = (float) Math.atan2(linearAcceleration[0], Math.sqrt(linearAcceleration[1] * linearAcceleration[1] + linearAcceleration[2] * linearAcceleration[2]));
-                float roll = (float) Math.atan2(linearAcceleration[1], Math.sqrt(linearAcceleration[0] * linearAcceleration[0] + linearAcceleration[2] * linearAcceleration[2]));
+//                float pitch = (float) Math.atan2(linearAcceleration[0], Math.sqrt(linearAcceleration[1] * linearAcceleration[1] + linearAcceleration[2] * linearAcceleration[2]));
+//                float roll = (float) Math.atan2(linearAcceleration[1], Math.sqrt(linearAcceleration[0] * linearAcceleration[0] + linearAcceleration[2] * linearAcceleration[2]));
 
-                Log.d("MainActivity", "Pitch: " + Math.toDegrees(pitch) + ", Roll: " + Math.toDegrees(roll));
+//                Log.d("MainActivity", "Pitch: " + Math.toDegrees(pitch) + ", Roll: " + Math.toDegrees(roll));
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        textView.setText("Pitch: " + Math.toDegrees(pitch) + ", Roll: " + Math.toDegrees(roll));
+                        textView.setText("ACC: " + linearAcceleration[0]);
                     }
                 });
             }
