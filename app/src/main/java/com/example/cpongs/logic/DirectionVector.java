@@ -1,4 +1,4 @@
-package com.example.cpongs;
+package com.example.cpongs.logic;
 
 public class DirectionVector {
     private double x, y;

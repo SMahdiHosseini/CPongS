@@ -1,4 +1,4 @@
-package com.example.cpongs;
+package com.example.cpongs.logic;
 
 public class Config {
     public static final double Mass1 = 0.01, Mass2 = 0.05;  // 1gr - 5gr

@@ -1,4 +1,4 @@
-package com.example.cpongs;
+package com.example.cpongs.logic;
 
 import android.util.Pair;
 import android.widget.ImageView;
@@ -9,13 +9,13 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 
-public class BoardManager {
+public class Board {
     List<Ball> balls = new ArrayList<>();
     int width, height;
     double angleX, angleY, angleZ;  // Only X and Y matter // so why we have angleZ :)))
     double Ax, Ay, Az;
 
-    public BoardManager(Pair<Integer, Integer> widthHeight) {
+    public Board(Pair<Integer, Integer> widthHeight) {
         width = widthHeight.first;
         height = widthHeight.second;
 
@@ -35,11 +35,11 @@ public class BoardManager {
     protected synchronized TimerTask moveBalls(double intervalSeconds) {
         for (Ball ball : balls) {
             ball.updateAccelerationByAngles(angleX, angleY, angleZ);
-            ball.updateVelocity(intervalSeconds, this);
+            ball.updateVelocity(intervalSeconds);
             Pair<Double, Double> ballNewPositions = ball.getNextPosition(intervalSeconds);
             ball.handleWallCollision(ballNewPositions.first, ballNewPositions.second, this);
             ball.updateAccelerationByAngles(angleX, angleY, angleZ);
-            ball.updateVelocity(intervalSeconds, this);
+            ball.updateVelocity(intervalSeconds);
         }
 
         for (int i = 0; i < balls.size(); i++) {  // Handle Ball Collision

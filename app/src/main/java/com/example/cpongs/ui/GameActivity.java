@@ -1,21 +1,24 @@
-package com.example.cpongs;
+package com.example.cpongs.ui;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Point;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
-import android.util.Log;
 import android.util.Pair;
 import android.view.Display;
+import android.view.View;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-public class MainActivity extends AppCompatActivity implements SensorEventListener {
+import com.example.cpongs.logic.Board;
+import com.example.cpongs.R;
+
+public class GameActivity extends AppCompatActivity implements SensorEventListener {
     private SensorManager sensorManager;
     private Sensor accelerometer;
     private Sensor gyroscope;
@@ -24,13 +27,11 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     private long lastUpdate = 0;
     private float lastGyroscopeZ = 0.0f;
 
-    private TextView textView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        textView = findViewById(R.id.textViewSensor);
+        setContentView(R.layout.activity_game);
 
         sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION);
@@ -42,18 +43,18 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         initBoard();
     }
 
+    public void reset(View view) {
+        Intent intent = getIntent();
+        finish();
+        startActivity(intent);
+    }
+
     @Override
     public void onSensorChanged(SensorEvent event) {
         if (event.sensor.getType() == Sensor.TYPE_LINEAR_ACCELERATION) {
             // Subtracting the gravity vector from the raw accelerometer data to get linear acceleration
             linearAcceleration = event.values[0];
             // TODO update boardmanager
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    textView.setText("ACC: " + linearAcceleration);
-                }
-            });
         } else if (event.sensor.getType() == Sensor.TYPE_GYROSCOPE) {
 
             // Computing the change in orientation using the gyroscope sensor data
@@ -71,7 +72,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     protected void initBoard() {
         ImageView ballImageView1 = findViewById(R.id.ball);
         ImageView ballImageView2 = findViewById(R.id.rocket);
-        BoardManager boardManager = new BoardManager(getDisplayWidthHeight());
+        Board board = new Board(getDisplayWidthHeight());
     }
 
     protected Pair getDisplayWidthHeight() {
@@ -84,9 +85,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     }
 
     @Override
-    public void onAccuracyChanged(Sensor sensor, int accuracy) {
-        // Do nothing
-    }
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {}
 
     @Override
     protected void onResume() {
@@ -100,4 +99,6 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         super.onPause();
         sensorManager.unregisterListener(this);
     }
+
+    //TODO: onRestart!
 }
