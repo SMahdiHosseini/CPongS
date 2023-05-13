@@ -8,6 +8,7 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.util.Pair;
 import android.view.Display;
 import android.view.View;
@@ -15,10 +16,14 @@ import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.cpongs.logic.Ball;
 import com.example.cpongs.logic.Board;
 import com.example.cpongs.R;
+import com.example.cpongs.logic.Config;
+import com.example.cpongs.logic.Rocket;
 
 public class GameActivity extends AppCompatActivity implements SensorEventListener {
+    Board board;
     private SensorManager sensorManager;
     private Sensor accelerometer;
     private Sensor gyroscope;
@@ -52,36 +57,33 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
     @Override
     public void onSensorChanged(SensorEvent event) {
         if (event.sensor.getType() == Sensor.TYPE_LINEAR_ACCELERATION) {
-            // Subtracting the gravity vector from the raw accelerometer data to get linear acceleration
-            linearAcceleration = event.values[0];
-            // TODO update boardmanager
+            linearAcceleration = event.values[0] * Config.pixelsPerMeter;
+            board.updateRocketAcceleration(linearAcceleration);
         } else if (event.sensor.getType() == Sensor.TYPE_GYROSCOPE) {
-
-            // Computing the change in orientation using the gyroscope sensor data
-            float dt = (event.timestamp - lastUpdate) * 1.0e-9f;
-            lastUpdate = event.timestamp;
             float gyroZ = event.values[2];
-            float deltaZ = (gyroZ + lastGyroscopeZ) / 2.0f * dt;
-            lastGyroscopeZ = gyroZ;
-
-            //TODO update boradmanager
-
+            board.updateRocketTilt(gyroZ);
         }
     }
 
     protected void initBoard() {
+        DisplayMetrics metrics = getResources().getDisplayMetrics();
+        float densityDpi = metrics.densityDpi;
+        float densityDpm = densityDpi / 0.0254f;
+        Config.pixelsPerMeter = 1 / densityDpm;
         ImageView ballImageView = findViewById(R.id.ball);
+        Ball ball = new Ball(ballImageView, ballImageView.getX(), ballImageView.getY(), (float) (ballImageView.getLayoutParams().width/2.0));
         ImageView rocketImageView = findViewById(R.id.rocket);
-        Board board = new Board(getDisplayWidthHeight());
+        Rocket rocket = new Rocket(rocketImageView, rocketImageView.getX(), rocketImageView.getY());
+        board = new Board(getDisplayWidthHeight(), ball, rocket);
     }
 
-    protected Pair getDisplayWidthHeight() {
+    protected Pair<Integer, Integer> getDisplayWidthHeight() {
         Display mdisp = getWindowManager().getDefaultDisplay();
         Point mdispSize = new Point();
         mdisp.getSize(mdispSize);
         int maxX = mdispSize.x;
         int maxY = mdispSize.y;
-        return new Pair(maxX, maxY);
+        return new Pair<>(maxX, maxY);
     }
 
     @Override

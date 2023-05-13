@@ -12,7 +12,7 @@ public class Rocket extends GameObject {
         super(imageView, x, y);
         imageView.setPivotX(x);
         imageView.setPivotY(y);
-        length = 200;
+        length = imageView.getLayoutParams().width;
     }
 
     public void updateAngularVelocity(float angularVelocity) {
@@ -26,7 +26,7 @@ public class Rocket extends GameObject {
     }
 
     @Override
-    public void updatePosition(double intervalSeconds) {
+    public void updatePosition(float intervalSeconds) {
         x += 0.5 * ax * Math.pow(intervalSeconds, 2);
         tilt += angularVelocity * intervalSeconds;
         refreshImage();
@@ -44,11 +44,14 @@ public class Rocket extends GameObject {
     }
 
     public Pair<Float, Float> getStartPoint() {
-        return new Pair((float) (x - length / 2 * Math.cos(tilt)), (float) (y - length / 2 * Math.sin(tilt)));
+        return new Pair<>((float) (x - length / 2 * Math.cos(tilt)), (float) (y - length / 2 * Math.sin(tilt)));
     }
 
     public Pair<Float, Float> getEndPoint() {
-        return new Pair((float) (x + length / 2 * Math.cos(tilt)), (float) (y + length / 2 * Math.sin(tilt)));
+        return new Pair<>((float) (x + length / 2 * Math.cos(tilt)), (float) (y + length / 2 * Math.sin(tilt)));
     }
 
+    public float getTilt() {
+        return tilt;
+    }
 }

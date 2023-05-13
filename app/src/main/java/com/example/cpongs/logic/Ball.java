@@ -1,86 +1,36 @@
 package com.example.cpongs.logic;
 
-import android.util.Pair;
 import android.widget.ImageView;
 
-public class Ball extends GameObject{
-    double width = Config.BALL_WIDTH;
-    private float radius;
+public class Ball extends GameObject {
+    private final float radius;
+    private float vx;
+    private float vy;
 
     public Ball(ImageView imageView, float x, float y, float radius) {
         super(imageView, x, y);
         this.radius = radius;
+        ax = 0;
+        ay = Config.g * Config.pixelsPerMeter;
     }
 
-
-    public Pair<Float, Float> getNextPosition(double intervalSeconds) {
-        float newX = 0.5 * ax * Math.pow(intervalSeconds, 2) + vx * intervalSeconds + x;
-        float newY = 0.5 * ay * Math.pow(intervalSeconds, 2) + vy * intervalSeconds + y;
-        return new Pair<>(newX, newY);
+    public void updateVelocity(float intervalSeconds) {
+        vy += ay * intervalSeconds;
     }
 
-    public void updatePosition(double intervalSeconds) {
-        x = 0.5 * ax * Math.pow(intervalSeconds, 2) + vx * intervalSeconds + x;
-        y = 0.5 * ay * Math.pow(intervalSeconds, 2) + vy * intervalSeconds + y;
-
+    @Override
+    public void updatePosition(float intervalSeconds) {
+        x = (float) (0.5 * ax * Math.pow(intervalSeconds, 2) + vx * intervalSeconds + x);
+        y = (float) (0.5 * ay * Math.pow(intervalSeconds, 2) + vy * intervalSeconds + y);
+        updateVelocity(intervalSeconds);
         refreshImage();
     }
 
-
-    public void handleWallCollision(double newX, double newY, Board board) {
-        if (board.doesHitWall(newX + width / 2, newY)) {
-            vy = Math.abs(vy);
-        }
-        if (board.doesHitWall(newX + width / 2, newY + width)) {
-            vy = -Math.abs(vy);
-        }
-        if (board.doesHitWall(newX, newY + width / 2)) {
-            vx = Math.abs(vx);
-        }
-        if (board.doesHitWall(newX + width, newY + width / 2)) {
-            vx = -Math.abs(vx);
-        }
-    }
-
-
-    public void updateAccelerationByAngles(double angleX, double angleY, double angleZ) {
-        double fX = mass * Config.g * Math.sin(angleY);
-        double fY = mass * Config.g * Math.sin(angleX);
-        double N = mass * Config.g * Math.cos(Math.atan(euclideanNorm(Math.sin(angleX), Math.sin(angleY)) / (Math.cos(angleX) + Math.cos(angleY))));
-        if (this.isMoving() || this.canMove(fX, fY, N)) {
-            double frictionMagnitude = N * Config.M_k;
-            double frictionX = 0;
-            double frictionY = 0;
-            if (euclideanNorm(vx, vy) > 0) {
-                frictionX = frictionMagnitude * vx / euclideanNorm(vx, vy);
-                frictionY = frictionMagnitude * vy / euclideanNorm(vx, vy);
-            }
-            fX += -Math.signum(vx) * Math.abs(frictionX);
-            fY += -Math.signum(vy) * Math.abs(frictionY);
-        } else {
-            fX = 0;
-            fY = 0;
-        }
-        ax = fX / mass;
-        ay = fY / mass;
-
-        ax *= Config.SPEED_UP;
-        ay *= Config.SPEED_UP;
-    }
-
-
-    private boolean canMove(double fX, double fY, double N) {
-        double fMagnitude = euclideanNorm(fX, fY);
-        double frictionMagnitude = N * Config.M_k;
-        return fMagnitude > frictionMagnitude;
-    }
-
-    private double euclideanNorm(double a, double b) {  // Length of Vector (Magnitude)
-        return Math.sqrt(Math.pow(a, 2) + Math.pow(b, 2));
-    }
-
-    private boolean isMoving() {
-        return !(euclideanNorm(vx, vy) < Config.BALL_STOP_SPEED_THRESHOLD);
+    public void handleRocketCollision(float tilt) {
+        float newVx = (float) (-vy*Math.sin(2*tilt) + vx*Math.cos(2*tilt));
+        float newVy = (float) (vy*Math.cos(2*tilt) - vx*Math.sin(2*tilt));
+        vx = newVx;
+        vy = newVy;
     }
 
     public float getRadius() {

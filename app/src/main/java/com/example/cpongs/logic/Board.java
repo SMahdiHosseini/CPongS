@@ -1,7 +1,6 @@
 package com.example.cpongs.logic;
 
 import android.util.Pair;
-import android.widget.ImageView;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -12,7 +11,10 @@ public class Board {
     Rocket rocket;
     int width, height;
 
-    public Board(Pair<Integer, Integer> widthHeight) {
+    public Board(Pair<Integer, Integer> widthHeight, Ball ball, Rocket rocket) {
+        this.ball = ball;
+        this.rocket = rocket;
+
         width = widthHeight.first;
         height = widthHeight.second;
 
@@ -21,57 +23,30 @@ public class Board {
         t.schedule(new TimerTask() {
             @Override
             public void run() {
-                update(((float) Config.BOARD_REFRESH_RATE) / 1000);
+                update();
             }
         }, 0, Config.BOARD_REFRESH_RATE);
     }
 
-    protected synchronized TimerTask update(float intervalSeconds) {
-        ball.updateAccelerationByAngles(angleX, angleY, angleZ);
-        ball.updateVelocity(intervalSeconds);
-        Pair<float, float> ballNewPositions = ball.getNextPosition(intervalSeconds);
-        ball.handleWallCollision(ballNewPositions.first, ballNewPositions.second, this);
-        ball.updateAccelerationByAngles(angleX, angleY, angleZ);
-        ball.updateVelocity(intervalSeconds);
-
-
-        for (Ball ball : balls) {  // Handle Wall Collision and update position
-            ball.updatePosition(intervalSeconds);
-        }
-        return null;
+    protected synchronized void update() {
+        ball.updatePosition(((float) Config.BOARD_REFRESH_RATE) / 1000);
+        rocket.updatePosition(((float) Config.BOARD_REFRESH_RATE) / 1000);
     }
 
     public static float distance(float x1, float y1, float x2, float y2) {
         return (float) Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(y2 - y1, 2));
     }
 
-    public void updateAnglesByGyroscope(float axisSpeedX, float axisSpeedY, float axisSpeedZ, float dT) {
-        angleX = angleX + axisSpeedX * dT;
-        angleY = angleY + axisSpeedY * dT;
-        angleZ = angleZ + axisSpeedZ * dT;
-//        Log.i("ANGLE", ""+angleX + "|" + angleY + "|" + angleZ + "|" + dT);
-    }
-
-    public void updateAccelerationByGravity(float axisXAcceleration, float axisYAcceleration, float axisZAcceleration) {
-        angleX = Math.asin(axisXAcceleration / Config.g);
-        angleY = Math.asin(axisYAcceleration / Config.g);
-        angleZ = Math.asin(axisZAcceleration / Config.g);
-    }
-
-    public void handleWallCollision(){
-        handleBallWallCollision();
-        handleBallRocketCollision();
-    }
-
-    public void handleBallWallCollision(){
+    public void handleBallWallCollision() {
 
     }
 
-    public void handleBallRocketCollision(){
-        if (checkRocketBallCollision()){
-
+    public void handleBallRocketCollision() {
+        if (checkRocketBallCollision()) {
+            ball.handleRocketCollision(rocket.getTilt());
         }
     }
+
     public boolean checkRocketBallCollision() {
         Pair<Float, Float> rocketStartPoint = rocket.getStartPoint();
         Pair<Float, Float> rocketEndPoint = rocket.getEndPoint();
@@ -111,5 +86,13 @@ public class Board {
             float distanceToLine = distance(circleX, circleY, projectionX, projectionY);
             return distanceToLine - circleRadius;
         }
+    }
+
+    public void updateRocketAcceleration(float linearAcceleration) {
+        rocket.updateAcceleration(linearAcceleration);
+    }
+
+    public void updateRocketTilt(float gyroZ) {
+        rocket.updateAngularVelocity(gyroZ);
     }
 }
