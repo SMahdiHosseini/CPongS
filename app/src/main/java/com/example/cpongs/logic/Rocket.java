@@ -50,4 +50,5 @@ public class Rocket extends GameObject {
     public Pair<Float, Float> getEndPoint() {
         return new Pair((float) (x + length / 2 * Math.cos(tilt)), (float) (y + length / 2 * Math.sin(tilt)));
     }
+
 }

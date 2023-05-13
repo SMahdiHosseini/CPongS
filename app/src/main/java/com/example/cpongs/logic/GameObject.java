@@ -17,7 +17,6 @@ public abstract class GameObject {
     }
 
     public abstract void updatePosition(double intervalSeconds);
-
     protected void refreshImage() {
         imageView.setX(x);
         imageView.setY(y);

@@ -58,6 +58,20 @@ public class Board {
         angleZ = Math.asin(axisZAcceleration / Config.g);
     }
 
+    public void handleWallCollision(){
+        handleBallWallCollision();
+        handleBallRocketCollision();
+    }
+
+    public void handleBallWallCollision(){
+
+    }
+
+    public void handleBallRocketCollision(){
+        if (checkRocketBallCollision()){
+
+        }
+    }
     public boolean checkRocketBallCollision() {
         Pair<Float, Float> rocketStartPoint = rocket.getStartPoint();
         Pair<Float, Float> rocketEndPoint = rocket.getEndPoint();
@@ -95,17 +109,7 @@ public class Board {
 
             // Calculate the distance between the circle and the closest point on the line segment
             float distanceToLine = distance(circleX, circleY, projectionX, projectionY);
-
-            // Check if the circle intersects with the line segment
-            boolean intersects = distanceToLine <= circleRadius;
-
-            if (intersects) {
-                // If the circle intersects with the line segment, the distance is 0
-                return 0;
-            } else {
-                // Otherwise, return the distance between the circle and the closest point on the line segment
-                return distanceToLine - circleRadius;
-            }
+            return distanceToLine - circleRadius;
         }
     }
 }
