@@ -5,18 +5,17 @@ import android.widget.ImageView;
 
 public class Ball extends GameObject{
     double width = Config.BALL_WIDTH;
+    private float radius;
 
-    public Ball(ImageView imageView, double mass, double x, double y) {
-        super(imageView, mass, x, y);
-        imageView.getLayoutParams().height = (int)width;
-        imageView.getLayoutParams().width = (int)width;
-        imageView.requestLayout();
+    public Ball(ImageView imageView, float x, float y, float radius) {
+        super(imageView, x, y);
+        this.radius = radius;
     }
 
 
-    public Pair<Double, Double> getNextPosition(double intervalSeconds) {
-        double newX = 0.5 * ax * Math.pow(intervalSeconds, 2) + vx * intervalSeconds + x;
-        double newY = 0.5 * ay * Math.pow(intervalSeconds, 2) + vy * intervalSeconds + y;
+    public Pair<Float, Float> getNextPosition(double intervalSeconds) {
+        float newX = 0.5 * ax * Math.pow(intervalSeconds, 2) + vx * intervalSeconds + x;
+        float newY = 0.5 * ay * Math.pow(intervalSeconds, 2) + vy * intervalSeconds + y;
         return new Pair<>(newX, newY);
     }
 
@@ -82,5 +81,9 @@ public class Ball extends GameObject{
 
     private boolean isMoving() {
         return !(euclideanNorm(vx, vy) < Config.BALL_STOP_SPEED_THRESHOLD);
+    }
+
+    public float getRadius() {
+        return radius;
     }
 }

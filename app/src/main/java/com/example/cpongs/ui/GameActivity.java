@@ -70,8 +70,8 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
     }
 
     protected void initBoard() {
-        ImageView ballImageView1 = findViewById(R.id.ball);
-        ImageView ballImageView2 = findViewById(R.id.rocket);
+        ImageView ballImageView = findViewById(R.id.ball);
+        ImageView rocketImageView = findViewById(R.id.rocket);
         Board board = new Board(getDisplayWidthHeight());
     }
 

@@ -4,33 +4,38 @@ import android.widget.ImageView;
 
 public abstract class GameObject {
     protected ImageView imageView;
+    protected float x;
+    protected float y;
+    protected float ax;
+    protected float ay;
 
-    protected double mass;
-
-    protected double x;
-    protected double y;
-
-    protected double vx;
-    protected double vy;
-
-    protected double ax;
-    protected double ay;
-
-    public GameObject(ImageView imageView, double mass, double x, double y) {
+    public GameObject(ImageView imageView, float x, float y) {
         this.imageView = imageView;
-        this.mass = mass;
 
         this.x = x;
         this.y = y;
     }
 
-    public void updateVelocity(double intervalSeconds) {
-        vx = ax * intervalSeconds + vx;
-        vy = ay * intervalSeconds + vy;
-    }
+    public abstract void updatePosition(double intervalSeconds);
 
     protected void refreshImage() {
-        imageView.setX((float) x);
-        imageView.setY((float) y);
+        imageView.setX(x);
+        imageView.setY(y);
+    }
+
+    public float getX() {
+        return x;
+    }
+
+    public void setX(float x) {
+        this.x = x;
+    }
+
+    public float getY() {
+        return y;
+    }
+
+    public void setY(float y) {
+        this.y = y;
     }
 }
