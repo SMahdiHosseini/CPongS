@@ -9,6 +9,7 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.util.Pair;
 import android.view.Display;
 import android.view.View;
@@ -61,20 +62,21 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
             board.updateRocketAcceleration(linearAcceleration);
         } else if (event.sensor.getType() == Sensor.TYPE_GYROSCOPE) {
             float gyroZ = event.values[2];
-            board.updateRocketTilt(gyroZ);
+//            board.updateRocketTilt(gyroZ);
         }
     }
 
     protected void initBoard() {
+        Pair<Integer, Integer> pageSize = getDisplayWidthHeight();
+
         DisplayMetrics metrics = getResources().getDisplayMetrics();
-        float densityDpi = metrics.densityDpi;
-        float densityDpm = densityDpi / 0.0254f;
-        Config.pixelsPerMeter = 1 / densityDpm;
+        float density = metrics.density;
+        Config.pixelsPerMeter = density * 1000;
         ImageView ballImageView = findViewById(R.id.ball);
-        Ball ball = new Ball(ballImageView, ballImageView.getX(), ballImageView.getY(), (float) (ballImageView.getLayoutParams().width/2.0));
+        Ball ball = new Ball(ballImageView, (float) (pageSize.first*0.5), (float) (pageSize.second*0.2), (float) (ballImageView.getLayoutParams().width/2.0));
         ImageView rocketImageView = findViewById(R.id.rocket);
-        Rocket rocket = new Rocket(rocketImageView, rocketImageView.getX(), rocketImageView.getY());
-        board = new Board(getDisplayWidthHeight(), ball, rocket);
+        Rocket rocket = new Rocket(rocketImageView, (float) (pageSize.first*0.5), (float) (pageSize.second*0.8));
+        board = new Board(pageSize, ball, rocket);
     }
 
     protected Pair<Integer, Integer> getDisplayWidthHeight() {

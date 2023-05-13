@@ -1,5 +1,6 @@
 package com.example.cpongs.logic;
 
+import android.util.Log;
 import android.widget.ImageView;
 
 public abstract class GameObject {

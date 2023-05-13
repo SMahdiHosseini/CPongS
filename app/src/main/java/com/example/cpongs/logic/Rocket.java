@@ -9,10 +9,10 @@ public class Rocket extends GameObject {
     private float tilt;
 
     public Rocket(ImageView imageView, float x, float y) {
-        super(imageView, x, y);
-        imageView.setPivotX(x);
-        imageView.setPivotY(y);
+        super(imageView, (float) (x-imageView.getLayoutParams().width*0.5), y);
         length = imageView.getLayoutParams().width;
+        imageView.setPivotX(this.x);
+        imageView.setPivotY(this.y);
     }
 
     public void updateAngularVelocity(float angularVelocity) {

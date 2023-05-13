@@ -1,5 +1,6 @@
 package com.example.cpongs.logic;
 
+import android.util.Log;
 import android.util.Pair;
 
 import java.util.Timer;
@@ -31,6 +32,7 @@ public class Board {
     protected synchronized void update() {
         ball.updatePosition(((float) Config.BOARD_REFRESH_RATE) / 1000);
         rocket.updatePosition(((float) Config.BOARD_REFRESH_RATE) / 1000);
+        handleBallRocketCollision();
     }
 
     public static float distance(float x1, float y1, float x2, float y2) {
