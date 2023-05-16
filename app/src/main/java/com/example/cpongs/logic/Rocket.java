@@ -12,7 +12,6 @@ public class Rocket extends GameObject {
         super(imageView, (float) (x-imageView.getLayoutParams().width*0.5), y);
         length = imageView.getLayoutParams().width;
         imageView.setPivotX(this.x);
-        imageView.setPivotY(this.y);
     }
 
     public void updateAngularVelocity(float angularVelocity) {
@@ -29,6 +28,7 @@ public class Rocket extends GameObject {
     public void updatePosition(float intervalSeconds) {
         x += 0.5 * ax * Math.pow(intervalSeconds, 2);
         tilt += angularVelocity * intervalSeconds;
+        imageView.setPivotX(x);
         refreshImage();
     }
 

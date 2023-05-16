@@ -59,10 +59,10 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
     public void onSensorChanged(SensorEvent event) {
         if (event.sensor.getType() == Sensor.TYPE_LINEAR_ACCELERATION) {
             linearAcceleration = event.values[0] * Config.pixelsPerMeter;
-            board.updateRocketAcceleration(linearAcceleration);
+//            board.updateRocketAcceleration(linearAcceleration);
         } else if (event.sensor.getType() == Sensor.TYPE_GYROSCOPE) {
             float gyroZ = event.values[2];
-//            board.updateRocketTilt(gyroZ);
+            board.updateRocketTilt(gyroZ);
         }
     }
 
