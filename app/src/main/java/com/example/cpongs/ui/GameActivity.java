@@ -62,7 +62,7 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
 //            board.updateRocketAcceleration(linearAcceleration);
         } else if (event.sensor.getType() == Sensor.TYPE_GYROSCOPE) {
             float gyroZ = event.values[2];
-            board.updateRocketTilt(gyroZ);
+            board.updateRocketTilt(-gyroZ);
         }
     }
 

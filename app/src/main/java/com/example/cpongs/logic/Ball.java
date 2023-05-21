@@ -37,4 +37,11 @@ public class Ball extends GameObject {
     public float getRadius() {
         return radius;
     }
+
+    public void handleWallCollision(int width, int height) {
+        if (x + radius >= width || x  - radius <= 0)
+            this.vx = - vx;
+        if (y  + radius >= height || y - radius <= 0)
+            this.vy = - vy;
+    }
 }

@@ -33,6 +33,7 @@ public class Board {
         ball.updatePosition(((float) Config.BOARD_REFRESH_RATE) / 1000);
         rocket.updatePosition(((float) Config.BOARD_REFRESH_RATE) / 1000);
         handleBallRocketCollision();
+        handleBallWallCollision();
     }
 
     public static float distance(float x1, float y1, float x2, float y2) {
@@ -40,7 +41,7 @@ public class Board {
     }
 
     public void handleBallWallCollision() {
-
+        ball.handleWallCollision(width, height);
     }
 
     public void handleBallRocketCollision() {
