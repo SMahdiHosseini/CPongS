@@ -33,15 +33,10 @@ public class Board {
         ball.updatePosition(((float) Config.BOARD_REFRESH_RATE) / 1000);
         rocket.updatePosition(((float) Config.BOARD_REFRESH_RATE) / 1000);
         handleBallRocketCollision();
-        handleBallWallCollision();
     }
 
     public static float distance(float x1, float y1, float x2, float y2) {
         return (float) Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(y2 - y1, 2));
-    }
-
-    public void handleBallWallCollision() {
-        ball.handleWallCollision(width, height);
     }
 
     public void handleBallRocketCollision() {
@@ -53,8 +48,11 @@ public class Board {
     public boolean checkRocketBallCollision() {
         Pair<Float, Float> rocketStartPoint = rocket.getStartPoint();
         Pair<Float, Float> rocketEndPoint = rocket.getEndPoint();
+        Log.d("SPoint", rocketStartPoint.first + " " + rocketStartPoint.second);
+        Log.d("EPoint", rocketEndPoint.first + " " + rocketEndPoint.second);
         float distance = distanceToLineSegment(rocketStartPoint.first, rocketStartPoint.second,
                 rocketEndPoint.first, rocketEndPoint.second, ball.getX(), ball.getY(), ball.getRadius());
+        Log.d("distance", String.valueOf(distance));
         return distance <= 0;
     }
 

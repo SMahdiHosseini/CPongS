@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">CPongS</string>
+    <string name="reset">Reset!</string>
+    <string name="rocket_image">Rocket image</string>
+    <string name="ball_image">Ball image</string>
 </resources>

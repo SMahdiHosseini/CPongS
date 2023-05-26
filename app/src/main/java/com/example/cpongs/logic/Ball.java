@@ -1,6 +1,5 @@
 package com.example.cpongs.logic;
 
-import android.util.Log;
 import android.widget.ImageView;
 
 public class Ball extends GameObject {
@@ -8,8 +7,8 @@ public class Ball extends GameObject {
     private float vx;
     private float vy;
 
-    public Ball(ImageView imageView, float x, float y, float radius) {
-        super(imageView, x-radius, y+radius);
+    public Ball(ImageView imageView, float x, float y, int width, int height, float radius) {
+        super(imageView, x-radius, y+radius, width, height);
         this.radius = radius;
         ax = 0;
         ay = Config.g * Config.pixelsPerMeter;
@@ -24,6 +23,7 @@ public class Ball extends GameObject {
         x = (float) (0.5 * ax * Math.pow(intervalSeconds, 2) + vx * intervalSeconds + x);
         y = (float) (0.5 * ay * Math.pow(intervalSeconds, 2) + vy * intervalSeconds + y);
         updateVelocity(intervalSeconds);
+        handleWallCollision();
         refreshImage();
     }
 
@@ -38,7 +38,8 @@ public class Ball extends GameObject {
         return radius;
     }
 
-    public void handleWallCollision(int width, int height) {
+    @Override
+    public void handleWallCollision() {
         if (x + radius >= width || x  - radius <= 0)
             this.vx = - vx;
         if (y  + radius >= height || y - radius <= 0)

@@ -1,6 +1,5 @@
 package com.example.cpongs.logic;
 
-import android.util.Log;
 import android.widget.ImageView;
 
 public abstract class GameObject {
@@ -10,14 +9,21 @@ public abstract class GameObject {
     protected float ax;
     protected float ay;
 
-    public GameObject(ImageView imageView, float x, float y) {
+    protected int width;
+    protected int height;
+
+    public GameObject(ImageView imageView, float x, float y, int width, int height) {
         this.imageView = imageView;
 
         this.x = x;
         this.y = y;
+        this.width = width;
+        this.height = height;
     }
 
     public abstract void updatePosition(float intervalSeconds);
+    public abstract void handleWallCollision();
+
     protected void refreshImage() {
         imageView.setX(x);
         imageView.setY(y);
@@ -27,15 +33,7 @@ public abstract class GameObject {
         return x;
     }
 
-    public void setX(float x) {
-        this.x = x;
-    }
-
     public float getY() {
         return y;
-    }
-
-    public void setY(float y) {
-        this.y = y;
     }
 }

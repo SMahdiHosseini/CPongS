@@ -18,19 +18,20 @@
             android:id="@+id/ball"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:contentDescription="Ball image"
+            android:contentDescription="@string/ball_image"
             android:src="@drawable/ball"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.47"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.17000002" />
+            app:layout_constraintVertical_bias="0.174" />
 
         <ImageView
             android:id="@+id/rocket"
             android:layout_width="200dp"
-            android:layout_height="5dp"
-            android:contentDescription="Rocket image"
+            android:layout_height="3dp"
+            android:contentDescription="@string/rocket_image"
             android:src="@drawable/rocket"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -44,7 +45,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
             android:onClick="reset"
-            android:text="Reset!"
+            android:text="@string/reset"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.498"
