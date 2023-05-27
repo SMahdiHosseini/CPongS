@@ -53,7 +53,7 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
     public void onSensorChanged(SensorEvent event) {
         if (event.sensor.getType() == Sensor.TYPE_LINEAR_ACCELERATION) {
             float linearAcceleration = event.values[0] * Config.pixelsPerMeter;
-            board.updateRocketAcceleration(-linearAcceleration);
+            board.updateRocketAcceleration(linearAcceleration);
         } else if (event.sensor.getType() == Sensor.TYPE_GYROSCOPE) {
             float gyroZ = event.values[2];
             board.updateRocketTilt(-gyroZ);
@@ -65,7 +65,7 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
 
         DisplayMetrics metrics = getResources().getDisplayMetrics();
         float density = metrics.density;
-        Config.pixelsPerMeter = density * 1000;
+        Config.pixelsPerMeter = density * 1500;
         ImageView ballImageView = findViewById(R.id.ball);
         Ball ball = new Ball(ballImageView, (float) (pageSize.first * 0.5), (float) (pageSize.second * 0.2),
                 pageSize.first, pageSize.second, (float) (ballImageView.getLayoutParams().width / 2.0));

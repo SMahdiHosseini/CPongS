@@ -60,7 +60,7 @@ public class Rocket extends GameObject {
 
     @Override
     public void updatePosition(float intervalSeconds) {
-        x += 0.5 * 50 * ax * Math.pow(intervalSeconds, 2);
+        x += 0.5 * 400 * ax * Math.pow(intervalSeconds, 2);
         tilt += angularVelocity * intervalSeconds;
         imageView.setPivotX(x - length / 2f);
         handleWallCollision();
@@ -70,7 +70,7 @@ public class Rocket extends GameObject {
     @Override
     protected void refreshImage() {
         imageView.setX(x - length / 2f);
-        imageView.setY(y);
+//        imageView.setY(y);
         imageView.setRotation((float) Math.toDegrees(tilt));
     }
 

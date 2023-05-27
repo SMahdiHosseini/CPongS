@@ -8,7 +8,7 @@ public class Ball extends GameObject {
     private float vy;
 
     public Ball(ImageView imageView, float x, float y, int width, int height, float radius) {
-        super(imageView, x-radius, y+radius, width, height);
+        super(imageView, x, y, width, height);
         this.radius = radius;
         ax = 0;
         ay = Config.g * Config.pixelsPerMeter;
@@ -44,5 +44,11 @@ public class Ball extends GameObject {
             this.vx = - vx;
         if (y  + radius >= height || y - radius <= 0)
             this.vy = - vy;
+    }
+
+    @Override
+    public void refreshImage() {
+        imageView.setX(x - radius);
+        imageView.setY(y - radius);
     }
 }
