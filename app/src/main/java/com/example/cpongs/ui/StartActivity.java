@@ -16,8 +16,13 @@ public class StartActivity extends AppCompatActivity {
         setContentView(R.layout.activity_start);
     }
 
-    public void start(View view) {
+    public void startNormal(View view) {
         Intent intent = new Intent(this, GameActivity.class);
+        startActivity(intent);
+    }
+
+    public void startGravity(View view) {
+        Intent intent = new Intent(this, GravityGameActivity.class);
         startActivity(intent);
     }
 }

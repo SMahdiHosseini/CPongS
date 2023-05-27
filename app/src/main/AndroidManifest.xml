@@ -26,6 +26,10 @@
             android:name=".ui.GameActivity"
             android:exported="true">
         </activity>
+        <activity
+            android:name=".ui.GravityGameActivity"
+            android:exported="true">
+        </activity>
 
     </application>
 
