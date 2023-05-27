@@ -52,7 +52,7 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
     @Override
     public void onSensorChanged(SensorEvent event) {
         if (event.sensor.getType() == Sensor.TYPE_LINEAR_ACCELERATION) {
-            float linearAcceleration = event.values[0] * Config.pixelsPerMeter;
+            float linearAcceleration = event.values[0] * (100 * getDisplayWidthHeight().first / 50f);
             board.updateRocketAcceleration(linearAcceleration);
         } else if (event.sensor.getType() == Sensor.TYPE_GYROSCOPE) {
             float gyroZ = event.values[2];
