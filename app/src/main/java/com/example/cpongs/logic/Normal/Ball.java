@@ -1,6 +1,9 @@
-package com.example.cpongs.logic;
+package com.example.cpongs.logic.Normal;
 
 import android.widget.ImageView;
+
+import com.example.cpongs.logic.Config;
+import com.example.cpongs.logic.GameObject;
 
 public class Ball extends GameObject {
     private final float radius;

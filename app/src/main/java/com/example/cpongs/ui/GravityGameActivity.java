@@ -17,12 +17,10 @@ import android.widget.ImageView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.cpongs.R;
-import com.example.cpongs.logic.Board;
 import com.example.cpongs.logic.Config;
 import com.example.cpongs.logic.Gravity.GravityBall;
 import com.example.cpongs.logic.Gravity.GravityBoard;
 import com.example.cpongs.logic.Gravity.GravityRocket;
-import com.example.cpongs.logic.Rocket;
 
 public class GravityGameActivity extends AppCompatActivity implements SensorEventListener {
     GravityBoard board;
@@ -58,13 +56,13 @@ public class GravityGameActivity extends AppCompatActivity implements SensorEven
     public void onSensorChanged(SensorEvent event) {
         if (event.sensor.getType() == Sensor.TYPE_GRAVITY) {
             float xAcceleration = event.values[0] * Config.pixelsPerMeter;
-            board.updateRocketAcceleration(xAcceleration);
+            board.updateRocketAcceleration(-xAcceleration);
         } else if (event.sensor.getType() == Sensor.TYPE_GYROSCOPE) {
             float gyroZ = event.values[2];
             board.updateRocketTilt(-gyroZ);
         } else if (event.sensor.getType() == Sensor.TYPE_LINEAR_ACCELERATION) {
             float zAcceleration = event.values[2]  * Config.pixelsPerMeter;
-            board.updateRocketVerticalAcceleration(zAcceleration);
+            board.updateRocketVerticalAcceleration(-zAcceleration);
         }
     }
 

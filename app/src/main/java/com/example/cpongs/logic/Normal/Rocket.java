@@ -1,7 +1,9 @@
-package com.example.cpongs.logic;
+package com.example.cpongs.logic.Normal;
 
 import android.util.Pair;
 import android.widget.ImageView;
+
+import com.example.cpongs.logic.GameObject;
 
 public class Rocket extends GameObject {
     private enum AccelerationState {

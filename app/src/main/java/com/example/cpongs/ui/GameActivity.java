@@ -16,11 +16,11 @@ import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.cpongs.logic.Ball;
-import com.example.cpongs.logic.Board;
+import com.example.cpongs.logic.Normal.Ball;
+import com.example.cpongs.logic.Normal.Board;
 import com.example.cpongs.R;
 import com.example.cpongs.logic.Config;
-import com.example.cpongs.logic.Rocket;
+import com.example.cpongs.logic.Normal.Rocket;
 
 public class GameActivity extends AppCompatActivity implements SensorEventListener {
     Board board;

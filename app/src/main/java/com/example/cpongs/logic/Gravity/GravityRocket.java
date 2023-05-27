@@ -21,7 +21,7 @@ public class GravityRocket extends GameObject {
 
 
     public GravityRocket(ImageView imageView, float x, float y, int width, int height) {
-        super(imageView, x , y, width, height);
+        super(imageView, x, y, width, height);
         length = imageView.getLayoutParams().width;
         imageView.setPivotX(this.x);
         accelerationState = AccelerationState.Halt;
@@ -33,32 +33,29 @@ public class GravityRocket extends GameObject {
 
     public void updateAcceleration(float ax) {
         // Ignore small alterations to acceleration
-        if (Math.abs(ax - this.ax) < this.ax*0.3) {
+        if (Math.abs(ax - this.ax) < this.ax * 0.3) {
             return;
         }
 
         // Ignore small readings of acceleration
-        if (Math.abs(ax) < 200) {
-            // If
-            if (accelerationState == AccelerationState.Decreasing) {
+        if (Math.abs(ax) < 1000) {
+            if (accelerationState == GravityRocket.AccelerationState.Decreasing) {
                 this.ax = 0;
-                accelerationState = AccelerationState.Halt;
+                accelerationState = GravityRocket.AccelerationState.Halt;
             }
             return;
         }
 
         float alpha = 0.6f;
         if (ax * this.ax < 0) {
-            alpha = 0.99f;
-            accelerationState = AccelerationState.Decreasing;
+            alpha = 0.9f;
+            accelerationState = GravityRocket.AccelerationState.Decreasing;
         } else {
-            accelerationState = AccelerationState.Increasing;
+            accelerationState = GravityRocket.AccelerationState.Increasing;
         }
 
         // apply low-pass filter for noise reduction
         this.ax = alpha * this.ax + (1 - alpha) * ax;
-
-//        this.updatePosition(((float) Config.BOARD_REFRESH_RATE) / 1000);
     }
 
     public void updateRocketVerticalAcceleration(float az) {
@@ -68,7 +65,7 @@ public class GravityRocket extends GameObject {
 
     @Override
     public void updatePosition(float intervalSeconds) {
-        x += 0.5 * 400 * ax * Math.pow(intervalSeconds, 2);
+        x += 0.5 * 20 * ax * Math.pow(intervalSeconds, 2);
         tilt += angularVelocity * intervalSeconds;
         imageView.setPivotX(x - length / 2f);
         handleWallCollision();

@@ -1,7 +1,9 @@
-package com.example.cpongs.logic;
+package com.example.cpongs.logic.Normal;
 
 import android.os.Handler;
 import android.util.Pair;
+
+import com.example.cpongs.logic.Config;
 
 import java.util.Timer;
 import java.util.TimerTask;
