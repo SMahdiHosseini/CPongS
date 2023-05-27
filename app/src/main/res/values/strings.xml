@@ -3,4 +3,6 @@
     <string name="reset">Reset!</string>
     <string name="rocket_image">Rocket image</string>
     <string name="ball_image">Ball image</string>
+    <string name="start">Start!</string>
+    <string name="pingpongrackets">PingPongRackets</string>
 </resources>

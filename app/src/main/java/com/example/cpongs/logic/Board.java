@@ -25,7 +25,7 @@ public class Board {
         hasCollision = false;
 
         Timer t = new Timer();
-        // 100 fps todo: fix error for non-UI thread
+        // 100 fps
         t.schedule(new TimerTask() {
             @Override
             public void run() {
