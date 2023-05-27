@@ -1,6 +1,6 @@
 package com.example.cpongs.logic;
 
-import android.util.Log;
+import android.os.Handler;
 import android.util.Pair;
 
 import java.util.Timer;
@@ -12,20 +12,29 @@ public class Board {
     Rocket rocket;
     int width, height;
 
+    boolean hasCollision;
+
+    private final Handler mHandler = new Handler();
+
     public Board(Pair<Integer, Integer> widthHeight, Ball ball, Rocket rocket) {
         this.ball = ball;
         this.rocket = rocket;
 
         width = widthHeight.first;
         height = widthHeight.second;
+        hasCollision = false;
 
         Timer t = new Timer();
-        // 100 fps
+        // 100 fps todo: fix error for non-UI thread
         t.schedule(new TimerTask() {
             @Override
             public void run() {
-                update();
-            }
+                mHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        update();
+                    }
+                });            }
         }, 0, Config.BOARD_REFRESH_RATE);
     }
 
@@ -41,18 +50,21 @@ public class Board {
 
     public void handleBallRocketCollision() {
         if (checkRocketBallCollision()) {
-            ball.handleRocketCollision(rocket.getTilt());
+            if (!this.hasCollision) {
+                ball.handleRocketCollision(rocket.getTilt());
+                this.hasCollision = true;
+            }
+        }
+        else {
+            this.hasCollision = false;
         }
     }
 
     public boolean checkRocketBallCollision() {
         Pair<Float, Float> rocketStartPoint = rocket.getStartPoint();
         Pair<Float, Float> rocketEndPoint = rocket.getEndPoint();
-        Log.d("SPoint", rocketStartPoint.first + " " + rocketStartPoint.second);
-        Log.d("EPoint", rocketEndPoint.first + " " + rocketEndPoint.second);
         float distance = distanceToLineSegment(rocketStartPoint.first, rocketStartPoint.second,
                 rocketEndPoint.first, rocketEndPoint.second, ball.getX(), ball.getY(), ball.getRadius());
-        Log.d("distance", String.valueOf(distance));
         return distance <= 0;
     }
 

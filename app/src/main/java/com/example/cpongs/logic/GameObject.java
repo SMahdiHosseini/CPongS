@@ -24,10 +24,7 @@ public abstract class GameObject {
     public abstract void updatePosition(float intervalSeconds);
     public abstract void handleWallCollision();
 
-    protected void refreshImage() {
-        imageView.setX(x);
-        imageView.setY(y);
-    }
+    protected abstract void refreshImage();
 
     public float getX() {
         return x;
