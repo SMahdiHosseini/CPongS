@@ -27,26 +27,25 @@ public class Rocket extends GameObject {
         this.angularVelocity = (float) (0.5 * (this.angularVelocity + angularVelocity));
     }
 
-    /*
-     * Variable acceleration simulated by constant acceleration: Keep the same ax in same direction
-     * When acceleration direction is changed, decrease the effect of decreasing acceleration
-     * When phone is stopped i.e. acceleration is zero, need to halt the rocket
-     * */
-
     public void updateAcceleration(float ax) {
-        if (Math.abs(ax) < 5 && accelerationState == AccelerationState.Decreasing) {
-            this.ax = 0;
-            accelerationState = AccelerationState.Halt;
+        // Ignore small alterations to acceleration
+        if (Math.abs(ax - this.ax) < this.ax*0.3) {
             return;
         }
 
-        if (ax * this.ax > 0) {
+        // Ignore small readings of acceleration
+        if (Math.abs(ax) < 200) {
+            // If
+            if (accelerationState == AccelerationState.Decreasing) {
+                this.ax = 0;
+                accelerationState = AccelerationState.Halt;
+            }
             return;
         }
 
         float alpha = 0.6f;
         if (ax * this.ax < 0) {
-            alpha = 0.95f;
+            alpha = 0.99f;
             accelerationState = AccelerationState.Decreasing;
         } else {
             accelerationState = AccelerationState.Increasing;
@@ -55,7 +54,7 @@ public class Rocket extends GameObject {
         // apply low-pass filter for noise reduction
         this.ax = alpha * this.ax + (1 - alpha) * ax;
 
-        this.updatePosition(((float) Config.BOARD_REFRESH_RATE) / 1000);
+//        this.updatePosition(((float) Config.BOARD_REFRESH_RATE) / 1000);
     }
 
     @Override
